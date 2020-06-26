@@ -1,7 +1,10 @@
-A = 20;
-N = 96;
-M = N*abs(A)^2;
-L = 10;
-T = 30;
+A = 1;
+omega = 20;
+N = 400;
+L = 2;
+T = 10;
+safety_factor = 1.01;
+M = T/L * N * abs (A) * safety_factor * sqrt (3);
 h = L/N;
 dt = T/M;
+
