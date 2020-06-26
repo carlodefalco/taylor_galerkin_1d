@@ -1,6 +1,7 @@
+testnum = 2;
 A = 1;
 omega = 20;
-N = 400;
+N = 50;
 L = 2;
 T = 10;
 safety_factor = 1.01;

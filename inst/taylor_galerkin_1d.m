@@ -45,15 +45,22 @@ for n = 1 : M
   u(end, n+1) = UN1;
   
   figure (1)
+  subplot (3, 1, 1)
   plot (x, uex, x, u(:, n+1), 'x-');
+  legend ('exact', 'computed')
   drawnow
 
-  figure (2)
+  figure (1)
+  subplot (3, 1, 2)
   plot (x, abs (uex- u(:, n+1)));
+  title "error in space"
   drawnow
 
-  figure (3)
+  figure (1)
+  subplot (3, 1, 3)
   err(n+1) = trapz (x, abs (uex- u(:, n+1)).^2);
   plot (t(1:n+1), err);
+  title "2-norm of error in space vs time"
+  drawnow
 endfor 
 
