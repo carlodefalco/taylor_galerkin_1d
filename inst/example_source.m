@@ -1,6 +1,7 @@
 function [s, st] = example_source (t, x)
 
   coefficients
+
   xi  = t/T;
   xit = 1/T;
   u   =  ((x-L).^2/(L^2/(1-xi)) + xi);
@@ -10,5 +11,10 @@ function [s, st] = example_source (t, x)
   utt =  0;
   s   = ut + A* ux;
   st  = utt + A* uxt;
+  
+%{
+  s = zeros (size (x));
+  st = zeros (size (x));
+%}
   
 endfunction
