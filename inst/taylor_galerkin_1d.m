@@ -13,40 +13,37 @@ mass(end) =  mass(end) / 2;
 source  = @example_source;
 u(:, 1) = example_solution (0, x);
 
+
+
 for n = 1 : M
 
   [uex, ~, uext] = example_solution (t(n+1), x);
   U1   = uex(1);
+  UN1  = uex(end);
+  s  = source (t(n+1), x);
   
-  [s, st] = source (t(n), x);    
   du1  = zeros (size (x));
   du2  = zeros (size (x));
 
-  du1(1:N)    += s(1:N) * h/2;
-  du1(2:N+1)  += s(2:N+1) * h/2;
-  ux           = (u(2:end,n) - u(1:end-1,n))/h;
-  wxl          = -1/h;
-  wxr          =  1/h;
-  du1(1:N)    += - A * ux * h/2;
-  du1(2:N+1)  += - A * ux * h/2;
-  du2(1:N)    += - A^2 * ux * wxl * h/2;
-  du2(1:N)    +=   A * s(1:N) * wxl * h/2;
-  du2(1:N)    +=   st(1:N) * h/2;
-  du2(2:N+1)  += - A^2 * ux * wxr * h/2;
-  du2(2:N+1)  +=   A * s(2:N+1) * wxr * h/2;
-  du2(2:N+1)  +=   st(2:N+1) * h/2;
+  du1([1,N+1])+=   s([1,N+1]) * h/2;
+  du1(2:N)    +=   s(2:N) * h;
   
+  du1(1:N)    += - A * u(2:end,n)   / 2;
+  du1(2:N+1)  +=   A * u(1:end-1,n) / 2;
+
+  
+  du2(1:N+1)  += - 2* A^2 * u(:,n)    / h;
+  du2(2:N+1)  +=   A^2 * u(1:end-1,n) / h;
+  du2(1:N)    +=   A^2 * u(2:end,n)   / h;
+
   du1 = du1 ./ mass;
-  du1(1) = 0;
-    
   du2 = du2 ./ mass;
-  du2(1) = 0;   
-
-  dd = j / 1e2;
   
-  u(:, n+1) = max (0, u(:, n) + dt * du1 + dt^2/2 * du2);
+  
+  u(:, n+1) = u(:, n) + (dt) * du1 + (dt)^2/2 * du2;
   u(1, n+1) = U1;
-
+  u(end, n+1) = UN1;
+  
   figure (1)
   plot (x, uex, x, u(:, n+1), 'x-');
   drawnow
