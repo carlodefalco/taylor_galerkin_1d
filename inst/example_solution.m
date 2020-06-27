@@ -13,6 +13,6 @@ function [u, ux, ut] = example_solution (t, x)
     u   = sin ( 2*pi * (kappa*x/L-omega*t/T) );
     ut  = -2*pi*omega/T * cos ( 2*pi * (kappa*x/L-omega*t/T) );
     ux  = 2*pi*kappa/L * cos ( 2*pi * (kappa*x/L-omega*t/T) );
-  endif
+  end
   
-endfunction
+end

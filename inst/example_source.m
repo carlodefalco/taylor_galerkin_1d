@@ -15,6 +15,6 @@ function [s, st] = example_source (t, x)
   elseif (testnum == 2)
     s = zeros (size (x));
     st = zeros (size (x));
-  endif
+  end
   
-endfunction
+end
