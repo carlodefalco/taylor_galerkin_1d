@@ -1,7 +1,6 @@
 clear all
 close all
 
-
 coefficients
 
 msh.ndof       = N+1;
@@ -31,14 +30,13 @@ for n = 1 : M
   s  = source (t(n+1), msh.x);
 
   u(1, n+1)   = U1;
-  u(end, n+1) = UN1;
 
   du1 = tg2d1 (msh, u(:,n), A, s);
   du2 = tg2d2 (msh, u(:,n), A, s);
   du1 = du1 ./ mass;
   du2 = du2 ./ mass;
   
-  u(2:end-1, n+1)   = u(2:end-1, n) + dt * du1(2:end-1) + dt^2/2 * du2(2:end-1);
+  u(2:end, n+1)   = u(2:end, n) + dt * du1(2:end) + dt^2/2 * du2(2:end);
 
   err(n+1) = trapz (msh.x, abs (uex- u(:, n+1)).^2);
   figure (1)
