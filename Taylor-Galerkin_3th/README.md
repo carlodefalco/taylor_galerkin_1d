@@ -1,2 +1,0 @@
-# taylor_galerkin_1d
-taylor_galerkin_1d
