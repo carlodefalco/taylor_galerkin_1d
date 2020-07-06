@@ -2,7 +2,7 @@ clear all
 close all
 
     
-    coefficients
+coefficients
 
 msh.ndof       = N+1;
 msh.nel        = msh.ndof - 1;
@@ -69,8 +69,8 @@ for n = 1 : M
 
 
   rhs(2:end-1,1) = mass(2:end-1).*u(2:end-1, n) + (dt)*(du1(2:end-1)+ s1(2:end-1)) + ...
-      (dt^2/2)*du2(2:end-1) + (dt^2/3)*stN(2:end-1) + (dt^2/6)*stN1(2:end-1) + ...
-      (dt^2/3)*(A*sxN(2:end-1)) + (dt^2)/6*(A*sxN1(2:end-1));
+                   (dt^2/2)*du2(2:end-1) + (dt^2/3)*stN(2:end-1) + (dt^2/6)*stN1(2:end-1) + ...
+                   (dt^2/3)*(A*sxN(2:end-1)) + (dt^2)/6*(A*sxN1(2:end-1));
 
 
   
@@ -80,6 +80,8 @@ for n = 1 : M
   rhs(1) = U1*bignumber;
   rhs(end) = UN1*bignumber;
   u(:, n+1)   = lhs \ rhs;
+
+
 
   err(n+1) = trapz (msh.x, abs (uex- u(:, n+1)).^2);
   
