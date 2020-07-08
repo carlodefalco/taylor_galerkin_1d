@@ -21,29 +21,58 @@ mass(end) =  mass(end) / 2;
 source   = @example_source;
 solution = @example_solution;
 u(:, 1)  = solution (0, msh.x);
+w(:,1) = solution(0,msh.x);
 
 for n = 1 : M
 
   [uex, ~, uext] = solution (t(n+1), msh.x);
   U1   = uex(1);
   UN1  = uex(end);
-  s  = source (t(n+1), msh.x);
+  [s,st,sx]  = source (t(n), msh.x);
+  
+  S = mass.*s;
+  St = mass.*st;
+  Sx = mass.*sx;
+
+% S = source_2(msh, s);
+% St = source_2(msh, st);
+% Sx = source_2(msh, sx);
+  
+  
 
   u(1, n+1)   = U1;
-
+  w(1,n+1) = U1;
+  
   du1 = tg2d1 (msh, u(:,n), A, s);
   du2 = tg2d2 (msh, u(:,n), A, s);
+  
+  
   du1 = du1 ./ mass;
   du2 = du2 ./ mass;
   
-  u(2:end, n+1)   = u(2:end, n) + dt * du1(2:end) + dt^2/2 * du2(2:end);
+  
 
+  w(2:end,n) = u(2:end,n) + 1/3*dt*(du1(2:end)) + 1/9*(dt^2)*(du2(2:end));
+  
+  dw2 = tg2d2 (msh, w(:,n), A, s);
+  dw2 = dw2./mass;
+  
+  u(2:end,n+1) = u(2:end,n) + dt*(s(2:end)+du1(2:end)) + (dt^2/2)*(St(2:end)+A*Sx(2:end)+dw2(2:end));
+  
+  
+  
+  
+  
+  
+  
+  
+  
   err(n+1) = trapz (msh.x, abs (uex- u(:, n+1)).^2);
   
   
 %   figure (1)
 %   subplot (3, 1, 1)
-%   plot (msh.x, uex, msh.x, u(:, n+1), 'x-');
+%   plot (msh.x, uex,'b--', msh.x, u(:, n+1), 'r--','linewidth',1.2);
 %   legend ('exact', 'computed')
 %   
 %   subplot (3, 1, 2)
@@ -57,10 +86,4 @@ for n = 1 : M
   
 end
 
-fprintf('N = %d \n',N);
-fprintf('dt = %d \n',dt);
-fprintf('h = %d, \n',h);
-fprintf('L^2 error time t(50): %d \n',err(50));
-fprintf('L^2 error time t(100): %d \n',err(100));
-fprintf('L^2 error time t(150): %d \n', err(150));
-fprintf('*-*-*-*-*-*-*-*-*-*-*-* \n');
+
