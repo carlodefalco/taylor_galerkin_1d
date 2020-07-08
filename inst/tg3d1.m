@@ -5,7 +5,7 @@ function d1 = tg3d1 (msh, u, A, s)
     for i = 1 : 2
       for j = 1 : 2     
         d1(msh.conn(i, k)) = d1(msh.conn(i, k)) + ...
-        - A * u(msh.conn(j, k)) * msh.shg(j, k) * msh.shp(i, i, k) * msh.h(k)/2 + ... %% advection
+        - A * u(msh.conn(j, k)) * msh.shg(j, k) * msh.shp(i, i, k) * msh.h(k)/2;
           
       end
     end
