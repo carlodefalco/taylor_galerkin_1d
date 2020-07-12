@@ -52,7 +52,7 @@ for n = 1 : M
   
   
 
-  w(2:end,n) = u(2:end,n) + 1/3*dt*(du1(2:end)) + 1/9*(dt^2)*(du2(2:end));
+  w(2:end,n) = u(2:end,n) + 1/3*dt*(s(2:end)+du1(2:end)) + 1/9*(dt^2)*(St(2:end)+A*Sx(2:end)+du2(2:end));
   
   dw2 = tg2d2 (msh, w(:,n), A, s);
   dw2 = dw2./mass;
@@ -70,20 +70,21 @@ for n = 1 : M
   err(n+1) = trapz (msh.x, abs (uex- u(:, n+1)).^2);
   
   
-%   figure (1)
-%   subplot (3, 1, 1)
-%   plot (msh.x, uex,'b--', msh.x, u(:, n+1), 'r--','linewidth',1.2);
-%   legend ('exact', 'computed')
-%   
-%   subplot (3, 1, 2)
-%   plot (msh.x, abs (uex- u(:, n+1)));
-%   title ('error in space')
-% 
-%   subplot (3, 1, 3)
-%   plot (t(1:n+1), err);
-%   title ('L^2-norm of error in space vs time')
-%   drawnow
+  figure (1)
+  subplot (3, 1, 1)
+  plot (msh.x, uex,'b--', msh.x, u(:, n+1), 'r--','linewidth',1.2);
+  legend ('exact', 'computed')
+  
+  subplot (3, 1, 2)
+  plot (msh.x, abs (uex- u(:, n+1)));
+  title ('error in space')
+
+  subplot (3, 1, 3)
+  plot (t(1:n+1), err);
+  title ('L^2-norm of error in space vs time')
+  drawnow
   
 end
 
 
+disp(max(err));
